@@ -87,9 +87,6 @@ sls
 # Detailed view with colors and icons
 sls -cli --human-readable
 
-# Show headers for clarity
-sls -l --header --human-readable
-
 # Recursive exploration
 sls -clir --human-readable
 
