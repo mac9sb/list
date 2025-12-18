@@ -1,9 +1,9 @@
 import Foundation
 
 #if canImport(Darwin)
-    import Darwin
+import Darwin
 #elseif canImport(Glibc)
-    import Glibc
+import Glibc
 #endif
 
 /// A helper class to manage file system operations.
@@ -209,19 +209,19 @@ public class FileManagerHelper {
         // Sort contents based on sort option
         let sortedContents = contents.sorted { url1, url2 in
             switch options.sortBy {
-                case .name:
-                    return url1.lastPathComponent.localizedCompare(url2.lastPathComponent)
-                        == .orderedAscending
-                case .time:
-                    let date1 = try? url1.resourceValues(forKeys: [.contentModificationDateKey])
-                        .contentModificationDate
-                    let date2 = try? url2.resourceValues(forKeys: [.contentModificationDateKey])
-                        .contentModificationDate
-                    return (date1 ?? Date.distantPast) > (date2 ?? Date.distantPast)
-                case .size:
-                    let size1 = try? url1.resourceValues(forKeys: [.fileSizeKey]).fileSize
-                    let size2 = try? url2.resourceValues(forKeys: [.fileSizeKey]).fileSize
-                    return (size1 ?? 0) > (size2 ?? 0)
+            case .name:
+                return url1.lastPathComponent.localizedCompare(url2.lastPathComponent)
+                    == .orderedAscending
+            case .time:
+                let date1 = try? url1.resourceValues(forKeys: [.contentModificationDateKey])
+                    .contentModificationDate
+                let date2 = try? url2.resourceValues(forKeys: [.contentModificationDateKey])
+                    .contentModificationDate
+                return (date1 ?? Date.distantPast) > (date2 ?? Date.distantPast)
+            case .size:
+                let size1 = try? url1.resourceValues(forKeys: [.fileSizeKey]).fileSize
+                let size2 = try? url2.resourceValues(forKeys: [.fileSizeKey]).fileSize
+                return (size1 ?? 0) > (size2 ?? 0)
             }
         }
 
