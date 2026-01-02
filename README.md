@@ -4,49 +4,6 @@
 
 A simple and fast rebuild of the UNIX `ls` command.
 
-<img width="835" height="1018" alt="Screenshot 2025-07-11 at 12 40 58" src="https://github.com/user-attachments/assets/823505e9-ad33-4e0d-8251-3ef47d48c931" />
-
-## Installation
-
-### Download Pre-built Binaries
-Download the latest release for your architecture:
-
-**macOS Apple Silicon (M Series):**
-```sh
-sudo mkdir -p /usr/local/bin
-sudo curl -L $(curl -s https://api.github.com/repos/maclong9/list/releases/latest | grep "browser_download_url.*sls-aarch64" | cut -d\" -f4) -o /usr/local/bin/sls
-sudo chmod +x /usr/local/bin/sls
-```
-
-**Manual Download:**
-Visit the [releases page](https://github.com/maclong9/list/releases) and download `sls-aarch64` (Apple Silicon) or `sls-x86_64` (Intel) directly.
-
-### With mise
-```sh
-mise settings experimental true
-mise install spm:maclong9/swift-list
-```
-
-### With brew
-```sh
-brew install maclong9/tap/sls
-```
-
-### Shell Completion
-Generate completion scripts:
-```sh
-# Bash
-sls --generate-completion-script bash > ~/.bash_completions/sls.bash
-
-# Zsh
-sls --generate-completion-script zsh > ~/.zsh/completion/_sls
-
-# Fish
-sls --generate-completion-script fish > ~/.config/fish/completions/sls.fish
-```
-
-Install by copying to your shell's completion directory or sourcing in your shell config.
-
 ## Usage
 
 ```sh
