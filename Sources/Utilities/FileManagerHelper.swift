@@ -184,10 +184,12 @@ public class FileManagerHelper {
     }
 
     /// Retrieves and formats the contents of a directory.
-    /// - Parameter options: The display options.
+    /// - Parameters:
+    ///   - options: The display options.
+    ///   - currentDepth: The current recursion depth (0 = initial directory).
     /// - Throws: An error if the directory contents cannot be retrieved.
     /// - Returns: A formatted string listing the directory contents.
-    public static func contents(with options: DisplayOptions) throws -> String {
+    public static func contents(with options: DisplayOptions, currentDepth: Int = 0) throws -> String {
         var result = ""
 
         let targetURL = options.location ?? URL(fileURLWithPath: fileManager.currentDirectoryPath)
@@ -251,15 +253,20 @@ public class FileManagerHelper {
         }
 
         if options.recurse {
-            if !options.oneLine && !options.long {
-                result.append("\n")
-            }
+            // Check if we should continue recursing based on depth limit
+            let shouldRecurse = options.depthLimit.map { currentDepth < $0 } ?? true
 
-            for url in sortedContents where url.hasDirectoryPath {
-                result.append("\n\(url.relativePath):\n")
-                var newOptions = options
-                newOptions.location = url
-                result.append(try FileManagerHelper.contents(with: newOptions))
+            if shouldRecurse {
+                if !options.oneLine && !options.long {
+                    result.append("\n")
+                }
+
+                for url in sortedContents where url.hasDirectoryPath {
+                    result.append("\n\(url.relativePath):\n")
+                    var newOptions = options
+                    newOptions.location = url
+                    result.append(try FileManagerHelper.contents(with: newOptions, currentDepth: currentDepth + 1))
+                }
             }
         }
 

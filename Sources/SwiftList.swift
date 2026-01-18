@@ -5,7 +5,7 @@ import Foundation
 struct List: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "sls",
-        version: "1.3.0"
+        version: "1.5.0"
     )
 
     @Flag(name: .shortAndLong, help: "Display all files, including hidden.")
@@ -45,6 +45,9 @@ struct List: ParsableCommand {
     @Flag(name: [.customShort("F"), .long], help: "Append indicator (/, *, etc.) to entries.")
     var classify = false
 
+    @Option(name: [.customShort("L"), .long], help: "Limit recursion depth (requires -r).")
+    var depthLimit: Int?
+
     @Argument(help: "List files at one or more paths, omit for current directory.")
     var paths: [String] = []
 
@@ -69,7 +72,8 @@ struct List: ParsableCommand {
             humanReadable: humanReadable,
             directoryOnly: directory,
             classify: classify,
-            sortBy: sortBy
+            sortBy: sortBy,
+            depthLimit: depthLimit
         )
 
         if paths.isEmpty {
