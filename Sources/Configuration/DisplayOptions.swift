@@ -35,6 +35,9 @@ public struct DisplayOptions {
     /// How to sort the file listing
     public var sortBy: SortOption = .name
 
+    /// Maximum recursion depth (nil means unlimited)
+    public var depthLimit: Int?
+
     /// Creates a new DisplayOptions instance with the specified options
     /// - Parameters:
     ///   - location: The location to list files from (optional)
@@ -48,6 +51,7 @@ public struct DisplayOptions {
     ///   - directoryOnly: Whether to list directories themselves
     ///   - classify: Whether to append indicators to entries
     ///   - sortBy: How to sort the file listing
+    ///   - depthLimit: Maximum recursion depth (nil means unlimited)
     public init(
         location: URL? = nil,
         all: Bool = false,
@@ -59,7 +63,8 @@ public struct DisplayOptions {
         humanReadable: Bool = false,
         directoryOnly: Bool = false,
         classify: Bool = false,
-        sortBy: SortOption = .name
+        sortBy: SortOption = .name,
+        depthLimit: Int? = nil
     ) {
         self.location = location
         self.all = all
@@ -72,5 +77,6 @@ public struct DisplayOptions {
         self.directoryOnly = directoryOnly
         self.classify = classify
         self.sortBy = sortBy
+        self.depthLimit = depthLimit
     }
 }
