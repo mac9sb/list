@@ -54,6 +54,16 @@ struct List: ParsableCommand {
     /// Executes the command with the specified options.
     /// - Throws: An error if listing files fails.
     func run() throws {
+        // Validate depthLimit
+        if let limit = depthLimit {
+            if limit < 1 {
+                throw ValidationError("Depth limit must be a positive integer (>= 1)")
+            }
+            if !recurse {
+                throw ValidationError("Depth limit (-L/--depth-limit) requires the recurse flag (-r/--recurse)")
+            }
+        }
+
         // Determine sort option
         var sortBy: SortOption = .name
         if sortTime {
