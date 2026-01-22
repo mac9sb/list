@@ -27,59 +27,49 @@ jobs:
             binary-name: sls-linux-x86_64
           - os: linux
             arch: aarch64
-            runner: ubuntu-22.04-arm64
+            runner: ubuntu-22.04-arm
             binary-name: sls-linux-aarch64
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract Swift version
-        id: swift-version
-        run: |
-          VERSION=$(grep -m1 'swift-tools-version' Package.swift | sed 's/.*: *//' | tr -d ' ')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Swift version: $VERSION"
-
       - name: Setup Swift (macOS)
         if: matrix.os == 'macos'
         uses: swift-actions/setup-swift@v2
         with:
-          swift-version: ${{ steps.swift-version.outputs.version }}
+          swift-version: "6.2"
 
       - name: Cache Swift toolchain (macOS/Linux)
-        if: matrix.os != 'freebsd'
         uses: actions/cache@v4
         with:
           path: |
             ~/.swift
             /usr/local/swift
-          key: swift-${{ steps.swift-version.outputs.version }}-${{ matrix.os }}-${{ matrix.arch }}
+          key: swift-6.2-${{ matrix.os }}-${{ matrix.arch }}
           restore-keys: |
-            swift-${{ steps.swift-version.outputs.version }}-${{ matrix.os }}-
+            swift-6.2-${{ matrix.os }}-
 
       - name: Setup Swift (Linux)
         if: matrix.os == 'linux'
         run: |
-          SWIFT_VERSION="${{ steps.swift-version.outputs.version }}"
-          SWIFT_URL="https://download.swift.org/swift-${SWIFT_VERSION}-release/ubuntu$(lsb_release -rs | tr -d '.')/swift-${SWIFT_VERSION}-RELEASE/swift-${SWIFT_VERSION}-RELEASE-ubuntu$(lsb_release -rs)-$(uname -m).tar.gz"
-          
-          if [ ! -d ~/.swift/swift-${SWIFT_VERSION} ]; then
-            mkdir -p ~/.swift
-            curl -L "$SWIFT_URL" | tar -xz -C ~/.swift
-            mv ~/.swift/swift-${SWIFT_VERSION}-RELEASE-ubuntu* ~/.swift/swift-${SWIFT_VERSION}
-          fi
-          
-          echo "$HOME/.swift/swift-${SWIFT_VERSION}/usr/bin" >> $GITHUB_PATH
+          curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz
+          tar zxf swiftly-$(uname -m).tar.gz
+          ./swiftly init --quiet-shell-followup
+          . "${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh"
+          hash -r
+          swiftly install 6.2
+
+      - name: Resolve dependencies
+        run: swift package resolve
 
       - name: Cache SPM dependencies
-        if: matrix.os != 'freebsd'
         uses: actions/cache@v4
         with:
           path: .build
-          key: spm-${{ hashFiles('**/Package.resolved') }}-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.swift-version.outputs.version }}
+          key: spm-${{ hashFiles('Package.resolved') }}-${{ matrix.os }}-${{ matrix.arch }}-6.2
           restore-keys: |
-            spm-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.swift-version.outputs.version }}-
+            spm-${{ matrix.os }}-${{ matrix.arch }}-6.2-
             spm-${{ matrix.os }}-${{ matrix.arch }}-
 
       - name: Build (macOS)
@@ -129,3 +119,56 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-docs:
+    name: Publish Documentation
+    needs: build
+    runs-on: macos-14
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2"
+
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      - name: Build DocC documentation
+        run: |
+          swift package generate-documentation || true
+          # Continue even if there are warnings from dependencies
+
+      - name: Process DocC archive for static hosting
+        run: |
+          ARCHIVE_PATH=$(find .build -name "*.doccarchive" -type d | head -n 1)
+          if [ -z "$ARCHIVE_PATH" ]; then
+            echo "No doccarchive found"
+            exit 1
+          fi
+          mkdir -p docs
+          $(xcrun --find docc) process-archive transform-for-static-hosting "$ARCHIVE_PATH" \
+            --output-path docs \
+            --hosting-base-path /list
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -5,7 +5,9 @@ let package = Package(
     name: "sls",
     platforms: [.macOS(.v13)],
     products: [
-        .executable(name: "sls", targets: ["sls"])
+        .executable(name: "sls", targets: ["sls"]),
+        .library(name: "SwiftListCore", targets: ["SwiftListCore"]),
+        .library(name: "SwiftListCLI", targets: ["SwiftListCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
@@ -16,22 +18,28 @@ let package = Package(
         .executableTarget(
             name: "sls",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                "SwiftListCLI"
             ],
-            path: "Sources",
-            sources: [
-                "SwiftList.swift",
-                "Configuration/DisplayOptions.swift",
-                "Configuration/SortOption.swift",
-                "Models/FileRepresentation.swift",
-                "Utilities/FileManagerHelper.swift",
-                "Utilities/TerminalColors.swift",
+            path: "Sources/SwiftList"
+        ),
+        .target(
+            name: "SwiftListCLI",
+            dependencies: [
+                "SwiftListCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
+        .target(
+            name: "SwiftListCore",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .testTarget(
             name: "SwiftListTests",
             dependencies: [
-                "sls",
+                "SwiftListCore",
+                "SwiftListCLI",
                 .product(name: "Testing", package: "swift-testing"),
             ]
         ),

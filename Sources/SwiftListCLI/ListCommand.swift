@@ -1,12 +1,14 @@
 import ArgumentParser
 import Foundation
+import SwiftListCore
 
-@main
-struct List: ParsableCommand {
-    static let configuration = CommandConfiguration(
+public struct ListCommand: ParsableCommand {
+    public static let configuration = CommandConfiguration(
         commandName: "sls",
         version: "1.5.0"
     )
+    
+    public init() {}
 
     @Flag(name: .shortAndLong, help: "Display all files, including hidden.")
     var all = false
@@ -53,7 +55,7 @@ struct List: ParsableCommand {
 
     /// Executes the command with the specified options.
     /// - Throws: An error if listing files fails.
-    func run() throws {
+    public func run() throws {
         // Determine sort option
         var sortBy: SortOption = .name
         if sortTime {
