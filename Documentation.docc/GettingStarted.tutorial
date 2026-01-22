@@ -1,0 +1,61 @@
+# Getting Started with List
+
+Learn how to use the List command-line tool.
+
+@Tutorial(time: 5) {
+    @Intro(title: "Get Started with List") {
+        List is a modern replacement for the `ls` command with enhanced features.
+    }
+
+    @Section(title: "Installation") {
+        @ContentAndMedia {
+            Build List from source:
+
+            ```bash
+            git clone <repository-url>
+            cd list
+            swift build -c release
+            ```
+
+            Or download a pre-built binary from the releases page.
+        }
+    }
+
+    @Section(title: "Basic Usage") {
+        @ContentAndMedia {
+            List files in the current directory:
+
+            ```bash
+            sls
+            ```
+
+            List files in a specific directory:
+
+            ```bash
+            sls /path/to/directory
+            ```
+        }
+    }
+
+    @Section(title: "Options") {
+        @ContentAndMedia {
+            Use long format:
+
+            ```bash
+            sls --long
+            ```
+
+            Show hidden files:
+
+            ```bash
+            sls --all
+            ```
+
+            Sort by modification time:
+
+            ```bash
+            sls --sort=time
+            ```
+        }
+    }
+}

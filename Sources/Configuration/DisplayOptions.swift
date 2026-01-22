@@ -1,6 +1,20 @@
 import Foundation
 
-/// Stores display options for listing files.
+/// Configuration options for file listing display.
+///
+/// `DisplayOptions` controls how files are displayed, sorted, and formatted
+/// when listing directory contents.
+///
+/// ## Example
+///
+/// ```swift
+/// let options = DisplayOptions(
+///     all: true,
+///     long: true,
+///     sortBy: .time
+/// )
+/// let listing = try FileManagerHelper.contents(with: options)
+/// ```
 public struct DisplayOptions {
     /// The location to list files from
     public var location: URL?

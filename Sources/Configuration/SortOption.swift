@@ -1,12 +1,22 @@
 import ArgumentParser
 import Foundation
 
-/// Enum defining sorting options.
+/// Options for sorting file listings.
+///
+/// Defines how files should be sorted when listing directory contents.
+///
+/// ## Example
+///
+/// ```swift
+/// let options = DisplayOptions(sortBy: .time)
+/// ```
 public enum SortOption: String, ExpressibleByArgument {
-    /// Sort by name (default)
+    /// Sort files alphabetically by name (default).
     case name
-    /// Sort by modification time
+    
+    /// Sort files by modification time, most recent first.
     case time
-    /// Sort by file size
+    
+    /// Sort files by size, largest first.
     case size
 }

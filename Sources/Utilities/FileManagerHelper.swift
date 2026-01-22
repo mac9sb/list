@@ -6,9 +6,20 @@ import Darwin
 import Glibc
 #endif
 
-/// A helper class to manage file system operations.
+/// Helper class for file system operations and directory listing.
+///
+/// Provides utilities for retrieving, formatting, and displaying file system
+/// information with support for colors, icons, sorting, and recursive traversal.
+///
+/// ## Example
+///
+/// ```swift
+/// let options = DisplayOptions(long: true, color: true)
+/// let listing = try FileManagerHelper.contents(with: options)
+/// print(listing)
+/// ```
 public class FileManagerHelper {
-    /// The shared FileManager instance
+    /// The shared FileManager instance used for file operations.
     public static var fileManager: FileManager { FileManager() }
 
     /// Returns the terminal width in characters.
