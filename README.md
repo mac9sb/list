@@ -18,7 +18,7 @@ List provides a simple and fast way to list directory contents with:
 
 Build List from source:
 
-```bash
+```sh
 git clone https://github.com/mac9sb/list.git
 cd list
 swift build -c release
@@ -31,13 +31,13 @@ Or download a pre-built binary from the [releases page](https://github.com/mac9s
 
 List files in the current directory:
 
-```bash
+```sh
 sls
 ```
 
 List files in a specific directory:
 
-```bash
+```sh
 sls /path/to/directory
 ```
 
@@ -50,7 +50,7 @@ sls /path/to/directory
 
 ### Examples
 
-```bash
+```sh
 # Long format
 sls --long
 

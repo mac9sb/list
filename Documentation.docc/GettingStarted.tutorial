@@ -11,7 +11,7 @@ Learn how to use the List command-line tool.
         @ContentAndMedia {
             Build List from source:
 
-            ```bash
+            ```sh
             git clone <repository-url>
             cd list
             swift build -c release
@@ -25,13 +25,13 @@ Learn how to use the List command-line tool.
         @ContentAndMedia {
             List files in the current directory:
 
-            ```bash
+            ```sh
             sls
             ```
 
             List files in a specific directory:
 
-            ```bash
+            ```sh
             sls /path/to/directory
             ```
         }
@@ -41,19 +41,19 @@ Learn how to use the List command-line tool.
         @ContentAndMedia {
             Use long format:
 
-            ```bash
+            ```sh
             sls --long
             ```
 
             Show hidden files:
 
-            ```bash
+            ```sh
             sls --all
             ```
 
             Sort by modification time:
 
-            ```bash
+            ```sh
             sls --sort=time
             ```
         }

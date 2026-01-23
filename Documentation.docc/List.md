@@ -18,7 +18,7 @@ See the ``GettingStarted`` tutorial to learn how to use List.
 
 ## Usage
 
-```bash
+```sh
 sls [path] [options]
 ```
 
@@ -31,7 +31,7 @@ sls [path] [options]
 
 ### Examples
 
-```bash
+```sh
 sls
 sls /usr/local
 sls --long --sort=time
