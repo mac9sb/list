@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "SwiftListCore",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
         .testTarget(

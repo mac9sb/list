@@ -13,10 +13,10 @@ import Foundation
 public enum SortOption: String, ExpressibleByArgument {
     /// Sort files alphabetically by name (default).
     case name
-    
+
     /// Sort files by modification time, most recent first.
     case time
-    
+
     /// Sort files by size, largest first.
     case size
 }

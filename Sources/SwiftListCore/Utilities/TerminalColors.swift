@@ -14,16 +14,16 @@ import Foundation
 public enum TerminalColors: String {
     /// White color for regular files.
     case white = "\u{001B}[0;37m"
-    
+
     /// Yellow color for symbolic links.
     case yellow = "\u{001B}[0;33m"
-    
+
     /// Red color for executable files.
     case red = "\u{001B}[0;31m"
-    
+
     /// Blue color for directories.
     case blue = "\u{001B}[0;34m"
-    
+
     /// Reset code to restore default terminal colors.
     case reset = "\u{001B}[0;0m"
 }

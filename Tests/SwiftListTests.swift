@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 import RegexBuilder
+import Testing
 
 @testable import sls
 

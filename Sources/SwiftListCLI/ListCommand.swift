@@ -7,7 +7,7 @@ public struct ListCommand: ParsableCommand {
         commandName: "sls",
         version: "1.5.0"
     )
-    
+
     public init() {}
 
     @Flag(name: .shortAndLong, help: "Display all files, including hidden.")
