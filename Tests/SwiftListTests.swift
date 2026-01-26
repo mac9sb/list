@@ -2,7 +2,8 @@ import Foundation
 import RegexBuilder
 import Testing
 
-@testable import sls
+@testable import SwiftListCLI
+@testable import SwiftListCore
 
 // Make sure you set custom working directory to project directory
 
@@ -124,7 +125,7 @@ extension Tag {
         )
 
         let arguments = [tempDir1.path, tempDir2.path]
-        let command = try List.parse(arguments)
+        let command = try ListCommand.parse(arguments)
 
         let output = try captureOutput {
             try command.run()
