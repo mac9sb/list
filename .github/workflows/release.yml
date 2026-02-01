@@ -23,6 +23,7 @@ jobs:
       draft: false
       generate_release_notes: false
       release_body_intro: Swift CLI binaries for macOS and Linux.
+      swift_version: ""
 
       build_enabled: true
       build_matrix: |
