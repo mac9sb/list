@@ -42,6 +42,7 @@ jobs:
           },
           {
             "runner": "ubuntu-22.04-arm",
+            "allow_failure": true,
             "artifact_name": "sls-linux-aarch64",
             "artifact_path": "release/sls-linux-aarch64",
             "build_command": "curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz\ntar zxf swiftly-$(uname -m).tar.gz\n./swiftly init --quiet-shell-followup\n. \"${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh\"\nhash -r\nswiftly install 6.2\nswift build -c release\nmkdir -p release\ncp .build/release/sls release/sls-linux-aarch64"
